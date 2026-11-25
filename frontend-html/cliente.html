@@ -4,83 +4,103 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/style.css" />
-    <title>Oficina - Clientes</title>
+    <title>Torque - Clientes</title>
   </head>
   <body>
-    <h1>Clientes</h1>
-    <p><a href="/principal"> Voltar </a></p>
-    <form method="GET" action="/clientes">
-      <input
-        type="text"
-        name="busca"
-        placeholder="Buscar por nome..."
-        value="{{busca}}"
-      />
-      <button>Buscar</button>
-    </form>
-    <table border="1">
-      <tr>
-        <th>Nome</th>
-        <th>CPF</th>
-        <th>Telefone</th>
-        <th>E-mail</th>
-        <th></th>
-      </tr>
-      {{#clientes}}
-      <tr>
-        <td>{{nome}}</td>
-        <td>{{cpf}}</td>
-        <td>{{telefone}}</td>
-        <td>{{email}}</td>
-        <td>
-          <a href="/clientes?editar={{id}}">Editar</a>
-          <form method="POST" action="/clientes/{{id}}">
-            <input type="hidden" name="_method" value="DELETE" />
-            <button>Excluir</button>
+    <header class="site-header">
+      <a class="brand" href="/principal" aria-label="Torque Oficina Mecânica">
+        <span class="brand-mark" aria-hidden="true">T</span>
+        <span class="brand-copy"><strong>TORQUE</strong><small>OFICINA MECÂNICA</small></span>
+      </a>
+      <nav class="main-nav" aria-label="Navegação principal">
+        <a href="/principal"><span aria-hidden="true">⌂</span> Início</a>
+        <a class="active" href="/clientes" aria-current="page"><span aria-hidden="true">♟</span> Clientes</a>
+        <a href="/veiculos"><span aria-hidden="true">▰</span> Veículos</a>
+        <a href="/agendamentos"><span aria-hidden="true">▦</span> Agendamentos</a>
+      </nav>
+      <div class="user-menu">
+        <span class="user-greeting">Painel da oficina</span>
+        <form class="logout-form" method="POST" action="/sair">
+          <button class="icon-button" type="submit" aria-label="Sair" title="Sair">↪</button>
+        </form>
+      </div>
+    </header>
+
+    <main class="page-layout">
+      <div class="page-heading">
+        <div>
+          <p class="eyebrow">CADASTROS DA OFICINA</p>
+          <h1>Clientes</h1>
+          <p class="page-description">Consulte e mantenha os dados dos seus clientes organizados.</p>
+        </div>
+        <a class="back-link" href="/principal">← Início</a>
+      </div>
+
+      <div class="content-grid">
+        <section class="panel">
+          <div class="panel-heading">
+            <div>
+              <p class="panel-kicker">BASE DE CLIENTES</p>
+              <h2>Clientes cadastrados</h2>
+            </div>
+            <form class="search-form" method="GET" action="/clientes">
+              <input type="search" name="busca" placeholder="Buscar por nome..." value="{{busca}}" aria-label="Buscar cliente por nome" />
+              <button class="primary-button" type="submit">Buscar</button>
+            </form>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>CPF</th>
+                  <th>Telefone</th>
+                  <th>E-mail</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#clientes}}
+                <tr>
+                  <td class="cell-strong">{{nome}}</td>
+                  <td>{{cpf}}</td>
+                  <td>{{telefone}}</td>
+                  <td>{{email}}</td>
+                  <td>
+                    <div class="row-actions">
+                      <a class="text-link" href="/clientes?editar={{id}}">Editar</a>
+                      <form class="inline-form" method="POST" action="/clientes/{{id}}">
+                        <input type="hidden" name="_method" value="DELETE" />
+                        <button class="danger-button" type="submit">Excluir</button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+                {{/clientes}}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel form-panel">
+          <p class="panel-kicker">DADOS DO CLIENTE</p>
+          <h2>{{#editando}}Editar{{/editando}}{{^editando}}Novo{{/editando}} cliente</h2>
+          <p class="panel-description">Preencha as informações para manter o cadastro atualizado.</p>
+          <form class="stack-form" method="POST" action="{{acao}}">
+            {{#editando}}<input type="hidden" name="_method" value="PUT" />{{/editando}}
+            <label for="nome">Nome completo</label>
+            <input id="nome" type="text" name="nome" placeholder="Ex.: Ana Silva" value="{{form.nome}}" required />
+            <label for="cpf">CPF</label>
+            <input id="cpf" type="text" name="cpf" placeholder="000.000.000-00" value="{{form.cpf}}" required />
+            <label for="telefone">Telefone</label>
+            <input id="telefone" type="text" name="telefone" placeholder="(00) 00000-0000" value="{{form.telefone}}" required />
+            <label for="email">E-mail</label>
+            <input id="email" type="email" name="email" placeholder="cliente@email.com" value="{{form.email}}" required />
+            <button class="primary-button" type="submit">{{#editando}}Salvar alterações{{/editando}}{{^editando}}Cadastrar cliente{{/editando}}</button>
           </form>
-        </td>
-      </tr>
-      {{/clientes}}
-    </table>
-    <h2>
-      {{#editando}} Editar {{/editando}}{{^editando}} Cadastrar {{/editando}}
-      cliente
-    </h2>
-    <form method="POST" action="{{acao}}">
-      {{#editando}}<input type="hidden" name="_method" value="PUT" />
-      {{/editando}}
-      <input
-        type="text"
-        name="nome"
-        placeholder="Nome"
-        value="{{form.nome}}"
-        required
-      />
-      <input
-        type="text"
-        name="cpf"
-        placeholder="CPF"
-        value="{{form.cpf}}"
-        required
-      />
-      <input
-        type="text"
-        name="telefone"
-        placeholder="Telefone"
-        value="{{form.telefone}}"
-        required
-      />
-      <input
-        type="text"
-        name="email"
-        placeholder="E-mail"
-        value="{{form.email}}"
-        required
-      />
-      <button>
-        {{#editando}} Salvar {{/editando}} {{^editando}} Cadastrar {{/editando}}
-      </button>
-    </form>
-    <p>{{erro}}</p>
+          <p class="error-message" role="alert">{{erro}}</p>
+        </section>
+      </div>
+    </main>
   </body>
 </html>

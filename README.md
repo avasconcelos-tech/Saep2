@@ -8,8 +8,7 @@ de uma oficina mecanica, com protecao do CPF (LGPD) e login com token JWT.
 ```
 database/       script.sql (gerado pelo backend)
 backend/        API Node + Express
-frontend-html/  templates Mustache servidos pelo backend
-css/            estilos
+frontend-html/  templates Mustache, estilos e scripts do frontend
 ```
 
 ## 1. Configuração

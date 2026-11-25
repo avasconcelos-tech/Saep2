@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieparser());
 app.use(
   "/css",
-  express.static(path.join(__dirname, "..", "..", "css")),
+  express.static(path.join(__dirname, "..", "..", "frontend-html", "css")),
 );
 
 app.use((req, res, next) => {

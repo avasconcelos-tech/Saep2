@@ -4,15 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/style.css" />
-    <title>Oficina - Login</title>
+    <title>Torque - Entrar</title>
   </head>
-  <body>
-    <h1>Oficina Mecânica - Login</h1>
-    <form method="POST" action="/login">
-      <input type="email" name="email" placeholder="E-mail" required />
-      <input type="password" name="senha" placeholder="Senha" required />
-      <button>Entrar</button>
-    </form>
-    <p>{{erro}}</p>
+  <body class="login-page">
+    <main class="login-card">
+      <a class="brand login-brand" href="/" aria-label="Torque Oficina Mecânica">
+        <span class="brand-mark" aria-hidden="true">T</span>
+        <span class="brand-copy">
+          <strong>TORQUE</strong>
+          <small>OFICINA MECÂNICA</small>
+        </span>
+      </a>
+      <p class="eyebrow">BEM-VINDO DE VOLTA</p>
+      <h1>Acesse sua oficina</h1>
+      <p class="login-intro">Entre para gerenciar clientes, veículos e serviços.</p>
+      <form class="login-form" method="POST" action="/login">
+        <label for="email">E-mail</label>
+        <input id="email" type="email" name="email" placeholder="voce@oficina.com" autocomplete="username" required />
+        <label for="senha">Senha</label>
+        <input id="senha" type="password" name="senha" placeholder="Sua senha" autocomplete="current-password" required />
+        <button class="primary-button" type="submit">Entrar no sistema <span aria-hidden="true">→</span></button>
+      </form>
+      <p class="error-message" role="alert">{{erro}}</p>
+      <p class="login-footnote">Torque · Gestão inteligente para sua oficina</p>
+    </main>
   </body>
 </html>

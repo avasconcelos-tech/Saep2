@@ -4,78 +4,108 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/style.css" />
-    <title>Oficina - Veículos</title>
+    <title>Torque - Veículos</title>
   </head>
   <body>
-    <h1>Veículos</h1>
-    <p><a href="/principal"> Voltar </a></p>
-    <table border="1">
-      <tr>
-        <th>Placa</th>
-        <th>Marca</th>
-        <th>Modelo</th>
-        <th>Ano</th>
-        <th>Cliente</th>
-        <th></th>
-      </tr>
-      {{#veiculos}}
-      <tr>
-        <td>{{placa}}</td>
-        <td>{{marca}}</td>
-        <td>{{modelo}}</td>
-        <td>{{ano}}</td>
-        <td>{{cliente_nome}}</td>
-        <td>
-          <a href="/veiculos?editar={{id}}">Editar</a>
+    <header class="site-header">
+      <a class="brand" href="/principal" aria-label="Torque Oficina Mecânica">
+        <span class="brand-mark" aria-hidden="true">T</span>
+        <span class="brand-copy"><strong>TORQUE</strong><small>OFICINA MECÂNICA</small></span>
+      </a>
+      <nav class="main-nav" aria-label="Navegação principal">
+        <a href="/principal"><span aria-hidden="true">⌂</span> Início</a>
+        <a href="/clientes"><span aria-hidden="true">♟</span> Clientes</a>
+        <a class="active" href="/veiculos" aria-current="page"><span aria-hidden="true">▰</span> Veículos</a>
+        <a href="/agendamentos"><span aria-hidden="true">▦</span> Agendamentos</a>
+      </nav>
+      <div class="user-menu">
+        <span class="user-greeting">Painel da oficina</span>
+        <form class="logout-form" method="POST" action="/sair">
+          <button class="icon-button" type="submit" aria-label="Sair" title="Sair">↪</button>
+        </form>
+      </div>
+    </header>
 
-          <form method="POST" action="/veiculos/{{id}}">
-            <input type="hidden" name="_method" value="DELETE" />
-            <button>Excluir</button>
+    <main class="page-layout">
+      <div class="page-heading">
+        <div>
+          <p class="eyebrow">CADASTROS DA OFICINA</p>
+          <h1>Veículos</h1>
+          <p class="page-description">Acompanhe os veículos atendidos e seus respectivos proprietários.</p>
+        </div>
+        <a class="back-link" href="/principal">← Início</a>
+      </div>
+
+      <div class="content-grid">
+        <section class="panel">
+          <div class="panel-heading">
+            <div>
+              <p class="panel-kicker">FROTA DE CLIENTES</p>
+              <h2>Veículos cadastrados</h2>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Placa</th>
+                  <th>Marca</th>
+                  <th>Modelo</th>
+                  <th>Ano</th>
+                  <th>Cliente</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#veiculos}}
+                <tr>
+                  <td><span class="plate-badge">{{placa}}</span></td>
+                  <td>{{marca}}</td>
+                  <td class="cell-strong">{{modelo}}</td>
+                  <td>{{ano}}</td>
+                  <td>{{cliente_nome}}</td>
+                  <td>
+                    <div class="row-actions">
+                      <a class="text-link" href="/veiculos?editar={{id}}">Editar</a>
+                      <form class="inline-form" method="POST" action="/veiculos/{{id}}">
+                        <input type="hidden" name="_method" value="DELETE" />
+                        <button class="danger-button" type="submit">Excluir</button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+                {{/veiculos}}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel form-panel">
+          <p class="panel-kicker">DADOS DO VEÍCULO</p>
+          <h2>{{#editando}}Editar{{/editando}}{{^editando}}Novo{{/editando}} veículo</h2>
+          <p class="panel-description">Associe o veículo ao cadastro do cliente responsável.</p>
+          <form class="stack-form" method="POST" action="{{acao}}">
+            {{#editando}}<input type="hidden" name="_method" value="PUT" />{{/editando}}
+            <label for="cliente_id">Cliente</label>
+            <select id="cliente_id" name="cliente_id" required>
+              <option value="">Selecione o cliente...</option>
+              {{#clientes}}
+              <option value="{{id}}" {{selecionado}}>{{nome}}</option>
+              {{/clientes}}
+            </select>
+            <label for="placa">Placa</label>
+            <input id="placa" type="text" name="placa" placeholder="ABC1D23" value="{{form.placa}}" required />
+            <label for="marca">Marca</label>
+            <input id="marca" type="text" name="marca" placeholder="Ex.: Volkswagen" value="{{form.marca}}" />
+            <label for="modelo">Modelo</label>
+            <input id="modelo" type="text" name="modelo" placeholder="Ex.: Gol" value="{{form.modelo}}" />
+            <label for="ano">Ano</label>
+            <input id="ano" type="number" name="ano" placeholder="2024" value="{{form.ano}}" min="1900" max="2100" />
+            <button class="primary-button" type="submit">{{#editando}}Salvar alterações{{/editando}}{{^editando}}Cadastrar veículo{{/editando}}</button>
           </form>
-        </td>
-      </tr>
-      {{/veiculos}}
-    </table>
-
-    <h2>
-      {{#editando}} Editar {{/editando}}{{^editando}} Cadastrar {{/editando}}
-      veículo
-    </h2>
-
-    <form method="POST" action="{{acao}}">
-      {{#editando}}<input type="hidden" name="_method" value="PUT" />
-      {{/editando}}
-      <select name="cliente_id" required>
-        <option value="">Selecione o cliente...</option>
-        {{#clientes}}
-        <option value="{{id}}" {{selecionado}}>{{nome}}</option>
-        {{/clientes}}
-      </select>
-
-      <input
-        type="text"
-        name="placa"
-        placeholder="Placa"
-        value="{{form.placa}}"
-        required
-      />
-      <input
-        type="text"
-        name="marca"
-        placeholder="Marca"
-        value="{{form.marca}}"
-      />
-      <input
-        type="text"
-        name="modelo"
-        placeholder="Modelo"
-        value="{{form.modelo}}"
-      />
-      <input type="text" name="ano" placeholder="Ano" value="{{form.ano}}" />
-      <button>
-        {{#editando}} Salvar {{/editando}} {{^editando}} Cadastrar {{/editando}}
-      </button>
-    </form>
-    <p>{{erro}}</p>
+          <p class="error-message" role="alert">{{erro}}</p>
+        </section>
+      </div>
+    </main>
   </body>
 </html>

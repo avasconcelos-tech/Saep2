@@ -4,16 +4,124 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/style.css" />
-    <title>Oficina - Principal</title>
+    <title>Torque - Oficina Mecânica</title>
   </head>
   <body>
-    <h1>Olá, {{nome}}!</h1>
-    <p>
-      <a href="/clientes"> Clientes </a> | <a href="/veiculos"> Veículos </a> |
-      <a href="/agendamentos"> Agendamentos </a>
-    </p>
-    <form method="POST" action="/sair">
-      <button>Sair</button>
-    </form>
+    <header class="site-header">
+      <a class="brand" href="/principal" aria-label="Torque Oficina Mecânica">
+        <span class="brand-mark" aria-hidden="true">T</span>
+        <span class="brand-copy">
+          <strong>TORQUE</strong>
+          <small>OFICINA MECÂNICA</small>
+        </span>
+      </a>
+      <nav class="main-nav" aria-label="Navegação principal">
+        <a class="active" href="/principal" aria-current="page"><span aria-hidden="true">⌂</span> Início</a>
+        <a href="/clientes"><span aria-hidden="true">♟</span> Clientes</a>
+        <a href="/veiculos"><span aria-hidden="true">▰</span> Veículos</a>
+        <a href="/agendamentos"><span aria-hidden="true">▦</span> Agendamentos</a>
+      </nav>
+      <div class="user-menu">
+        <span class="user-greeting"><span aria-hidden="true">●</span> Olá, {{nome}}</span>
+        <form class="logout-form" method="POST" action="/sair">
+          <button class="icon-button" type="submit" aria-label="Sair" title="Sair">↪</button>
+        </form>
+      </div>
+    </header>
+
+    <main class="home-main">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">GESTÃO INTELIGENTE PARA SUA OFICINA</p>
+          <h1>Sistema Torque <em>Oficina Mecânica</em></h1>
+          <p class="hero-lead">
+            Organização, agilidade e controle para cuidar de cada detalhe em um só lugar.
+          </p>
+          <div class="yellow-stroke" aria-hidden="true"></div>
+
+          <div class="feature-grid">
+            <a class="feature-card" href="/agendamentos">
+              <span class="feature-icon" aria-hidden="true">▦</span>
+              <span>Agendamentos<br />simplificados</span>
+            </a>
+            <a class="feature-card" href="/veiculos">
+              <span class="feature-icon" aria-hidden="true">▰</span>
+              <span>Controle de<br />veículos</span>
+            </a>
+            <a class="feature-card" href="/clientes">
+              <span class="feature-icon" aria-hidden="true">♟</span>
+              <span>Gestão de<br />clientes</span>
+            </a>
+            <div class="feature-card">
+              <span class="feature-icon shield-icon" aria-hidden="true">✓</span>
+              <span>Mais eficiência<br />para sua oficina</span>
+            </div>
+          </div>
+          <a class="hero-cta" href="/agendamentos">
+            <span aria-hidden="true">⚒</span> Seu carro em boas mãos!
+          </a>
+        </div>
+
+        <div class="hero-art" aria-hidden="true">
+          <div class="garage-light garage-light-one"></div>
+          <div class="garage-light garage-light-two"></div>
+          <svg class="hero-car" viewBox="0 0 720 390" role="presentation">
+            <defs>
+              <linearGradient id="carPaint" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stop-color="#4f86b8" />
+                <stop offset=".38" stop-color="#142d49" />
+                <stop offset=".7" stop-color="#071424" />
+                <stop offset="1" stop-color="#31577a" />
+              </linearGradient>
+              <linearGradient id="carGlass" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stop-color="#9bc9e8" stop-opacity=".85" />
+                <stop offset=".45" stop-color="#193753" stop-opacity=".9" />
+                <stop offset="1" stop-color="#08182a" />
+              </linearGradient>
+              <filter id="carShadow" x="-20%" y="-30%" width="140%" height="170%">
+                <feGaussianBlur in="SourceAlpha" stdDeviation="10" />
+                <feOffset dy="12" />
+                <feComponentTransfer>
+                  <feFuncA type="linear" slope=".45" />
+                </feComponentTransfer>
+                <feMerge>
+                  <feMergeNode />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+            <ellipse cx="388" cy="331" rx="290" ry="27" fill="#020914" opacity=".8" />
+            <path
+              d="M75 272 98 229q14-25 46-37l106-35 62-77q17-21 49-22l125 3q42 1 67 31l55 67 58 16q32 9 43 39l12 40v36H75z"
+              fill="url(#carPaint)"
+              stroke="#86bde5"
+              stroke-opacity=".7"
+              stroke-width="4"
+              filter="url(#carShadow)"
+            />
+            <path
+              d="m274 155 52-63q9-11 34-12l119 3q25 1 42 21l42 54z"
+              fill="url(#carGlass)"
+              stroke="#a9d8f6"
+              stroke-opacity=".65"
+              stroke-width="3"
+            />
+            <path d="m390 83-3 74m84-51 26 52" fill="none" stroke="#a9d8f6" stroke-opacity=".55" stroke-width="3" />
+            <path d="m118 225 85-28m347 5 64 18" fill="none" stroke="#d4edff" stroke-opacity=".6" stroke-width="5" />
+            <path d="m81 269 77 2m495 0 75-1" fill="none" stroke="#ffc400" stroke-width="7" stroke-linecap="round" />
+            <path d="m101 240 60-7-10 27-69 4zm572 7 28 11-2 15-46-1z" fill="#eaf7ff" />
+            <path d="m102 255 47-3" stroke="#fff" stroke-width="6" stroke-linecap="round" />
+            <circle cx="225" cy="282" r="52" fill="#030811" stroke="#506b83" stroke-width="8" />
+            <circle cx="225" cy="282" r="27" fill="#8399aa" stroke="#d6e5f0" stroke-width="6" />
+            <circle cx="225" cy="282" r="9" fill="#25394b" />
+            <circle cx="548" cy="282" r="52" fill="#030811" stroke="#506b83" stroke-width="8" />
+            <circle cx="548" cy="282" r="27" fill="#8399aa" stroke="#d6e5f0" stroke-width="6" />
+            <circle cx="548" cy="282" r="9" fill="#25394b" />
+            <path d="M176 207q30-12 57-16m250 2 47 10" fill="none" stroke="#bdddf2" stroke-opacity=".5" stroke-width="3" />
+          </svg>
+          <div class="hero-art-caption">CUIDADO E PRECISÃO EM CADA SERVIÇO</div>
+        </div>
+      </section>
+    </main>
   </body>
 </html>

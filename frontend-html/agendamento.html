@@ -4,68 +4,105 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/style.css" />
-    <title>Oficina - Agendamentos</title>
+    <title>Torque - Agendamentos</title>
   </head>
   <body>
-    <h1>Agendamentos</h1>
-    <p><a href="/principal"> Voltar </a></p>
+    <header class="site-header">
+      <a class="brand" href="/principal" aria-label="Torque Oficina Mecânica">
+        <span class="brand-mark" aria-hidden="true">T</span>
+        <span class="brand-copy"><strong>TORQUE</strong><small>OFICINA MECÂNICA</small></span>
+      </a>
+      <nav class="main-nav" aria-label="Navegação principal">
+        <a href="/principal"><span aria-hidden="true">⌂</span> Início</a>
+        <a href="/clientes"><span aria-hidden="true">♟</span> Clientes</a>
+        <a href="/veiculos"><span aria-hidden="true">▰</span> Veículos</a>
+        <a class="active" href="/agendamentos" aria-current="page"><span aria-hidden="true">▦</span> Agendamentos</a>
+      </nav>
+      <div class="user-menu">
+        <span class="user-greeting">Painel da oficina</span>
+        <form class="logout-form" method="POST" action="/sair">
+          <button class="icon-button" type="submit" aria-label="Sair" title="Sair">↪</button>
+        </form>
+      </div>
+    </header>
 
-    <table border="1">
-      <tr>
-        <th>Data do Agendamento</th>
-        <th>Serviço</th>
-        <th>Veículo</th>
-        <th>Cliente</th>
-        <th>Alterar Data</th>
-      </tr>
-      {{#agendamentos}}
-      <tr>
-        <td>{{data_br}}</td>
-        <td>{{servico}}</td>
-        <td>{{placa}}</td>
-        <td>{{cliente_nome}}</td>
-        <td>
-          <form method="POST" action="/agendamentos/{{id}}">
-            <input type="hidden" name="_method" value="PUT" />
+    <main class="page-layout">
+      <div class="page-heading">
+        <div>
+          <p class="eyebrow">ROTINA DA OFICINA</p>
+          <h1>Agendamentos</h1>
+          <p class="page-description">Organize os próximos serviços e acompanhe os horários marcados.</p>
+        </div>
+        <a class="back-link" href="/principal">← Início</a>
+      </div>
 
-            <input
-              type="datetime-local"
-              name="data_agendamento"
-              value="{{data_input}}"
-              required
-            />
+      <div class="content-grid">
+        <section class="panel">
+          <div class="panel-heading">
+            <div>
+              <p class="panel-kicker">AGENDA DE SERVIÇOS</p>
+              <h2>Serviços programados</h2>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Data e hora</th>
+                  <th>Serviço</th>
+                  <th>Veículo</th>
+                  <th>Cliente</th>
+                  <th>Gerenciar</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#agendamentos}}
+                <tr>
+                  <td class="cell-strong">{{data_br}}</td>
+                  <td>{{servico}}</td>
+                  <td><span class="plate-badge">{{placa}}</span></td>
+                  <td>{{cliente_nome}}</td>
+                  <td>
+                    <div class="appointment-actions">
+                      <form class="inline-form inline-date-form" method="POST" action="/agendamentos/{{id}}">
+                        <input type="hidden" name="_method" value="PUT" />
+                        <input type="datetime-local" name="data_agendamento" value="{{data_input}}" aria-label="Nova data do agendamento" required />
+                        <button class="small-button" type="submit">Salvar</button>
+                      </form>
+                      <form class="inline-form" method="POST" action="/agendamentos/{{id}}">
+                        <input type="hidden" name="_method" value="DELETE" />
+                        <button class="danger-button" type="submit">Excluir</button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+                {{/agendamentos}}
+              </tbody>
+            </table>
+          </div>
+        </section>
 
-            <button>Salvar</button>
+        <section class="panel form-panel">
+          <p class="panel-kicker">NOVO SERVIÇO</p>
+          <h2>Cadastrar agendamento</h2>
+          <p class="panel-description">Escolha o veículo e defina quando o serviço será realizado.</p>
+          <form class="stack-form" method="POST" action="/agendamentos">
+            <label for="veiculo_id">Veículo</label>
+            <select id="veiculo_id" name="veiculo_id" required>
+              <option value="">Selecione o veículo...</option>
+              {{#veiculos}}
+              <option value="{{id}}">{{placa}} - {{marca}} {{modelo}}</option>
+              {{/veiculos}}
+            </select>
+            <label for="data_agendamento">Data e hora</label>
+            <input id="data_agendamento" type="datetime-local" name="data_agendamento" required />
+            <label for="servico">Serviço</label>
+            <input id="servico" type="text" name="servico" placeholder="Ex.: Revisão dos freios" />
+            <button class="primary-button" type="submit">Cadastrar agendamento</button>
           </form>
-
-          <form method="POST" action="/agendamentos/{{id}}">
-            <input type="hidden" name="_method" value="DELETE" />
-
-            <button>Excluir</button>
-          </form>
-        </td>
-      </tr>
-      {{/agendamentos}}
-    </table>
-
-    <h2>Cadastrar agendamento</h2>
-    <form method="POST" action="/agendamentos">
-      <select name="veiculo_id" required>
-        <option value="">Selecione o veículo...</option>
-        {{#veiculos}}
-        <option value="{{id}}">{{placa}} - {{marca}} {{modelo}}</option>
-        {{/veiculos}}
-      </select>
-
-      <input type="datetime-local" name="data_agendamento" required />
-      <input
-        type="text"
-        name="servico"
-        placeholder="Serviço que será efetuado"
-      />
-
-      <button>Cadastrar</button>
-    </form>
-    <p>{{erro}}</p>
+          <p class="error-message" role="alert">{{erro}}</p>
+        </section>
+      </div>
+    </main>
   </body>
 </html>
