@@ -12,6 +12,10 @@ const { criptografarCpf, descriptografarCpf } = require("./utils/cripto");
 const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieparser());
+app.use(
+  "/css",
+  express.static(path.join(__dirname, "..", "..", "css")),
+);
 
 app.use((req, res, next) => {
   const metodo = String(req.body?._method || "").toUpperCase();
@@ -60,6 +64,13 @@ async function mostrarVeiculos(req, res, erro = "") {
   const [veiculos] = await db.query("SELECT * FROM veiculos");
   const [listaClientes] = await db.query("SELECT id, nome FROM clientes");
   const editar = veiculos.find((v) => String(v.id) === req.query.editar);
+  const nomesPorCliente = new Map(
+    listaClientes.map((cliente) => [String(cliente.id), cliente.nome]),
+  );
+  const veiculosComCliente = veiculos.map((veiculo) => ({
+    ...veiculo,
+    cliente_nome: nomesPorCliente.get(String(veiculo.cliente_id)) || "",
+  }));
 
   const clientes = listaClientes.map((cliente) => ({
     ...cliente,
@@ -68,7 +79,7 @@ async function mostrarVeiculos(req, res, erro = "") {
 
   res.send(
     mostrar("veiculo", {
-      veiculos,
+      veiculos: veiculosComCliente,
       clientes,
       erro,
       editando: Boolean(editar),

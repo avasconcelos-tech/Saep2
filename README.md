@@ -18,6 +18,12 @@ Copie `backend/.env.example` para `backend/.env` e ajuste as credenciais do
 MySQL. Defina também uma chave aleatória de 32 bytes em `CRIPTO_CHAVE`, um IV
 de 16 bytes em `CRIPTO_IV` e um segredo aleatório para `JWT_SECRET`.
 
+No PowerShell, copie a configuração de exemplo assim:
+
+```powershell
+Copy-Item backend\.env.example backend\.env
+```
+
 ## 2. Banco de dados
 
 Tenha um MySQL rodando localmente. Gere o script SQL a partir de `backend/`:
@@ -38,11 +44,12 @@ Get-Content .\database\script.sql | mysql -u root -p
 ## 3. Backend
 
 ```bash
-cd backend
 npm start
 ```
 
 A API sobe em `http://localhost:3000`.
+O comando acima funciona na raiz do projeto; também é possível executar
+`npm start` dentro de `backend/`.
 
 As telas são servidas pelo backend. Abra `http://localhost:3000` no navegador;
 não existe `frontend-html/index.html` para abrir diretamente.
