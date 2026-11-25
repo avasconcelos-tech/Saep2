@@ -1,5 +1,5 @@
 // Middleware que verifica o token JWT em todas as rotas protegidas
-require('dotenv').config();
+require('dotenv').config({ path: require('path').join(__dirname, '..', '..', '.env') });
 const jwt = require('jsonwebtoken');
 
 function auth(req, res, next) {

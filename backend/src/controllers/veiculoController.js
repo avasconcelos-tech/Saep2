@@ -11,14 +11,12 @@ async function listar(req, res) {
 async function cadastrar(req, res) {
   const { cliente_id, placa, marca, modelo, ano } = req.body;
 
-  const resultado = await VeiculoService.cadastrar(cliente_id, placa, marca, modelo, ano);
-
-  // Veiculo sem cliente associado [RN09]
-  if (resultado.erro) {
-    return res.status(400).json({ mensagem: resultado.erro });
+  try {
+    const resultado = await VeiculoService.cadastrar(cliente_id, placa, marca, modelo, ano);
+    res.status(201).json(resultado);
+  } catch (erro) {
+    return res.status(400).json({ mensagem: erro.message });
   }
-
-  res.status(201).json(resultado);
 }
 
 // PUT /veiculos/:id
@@ -26,14 +24,12 @@ async function atualizar(req, res) {
   const { id } = req.params;
   const { cliente_id, placa, marca, modelo, ano } = req.body;
 
-  const resultado = await VeiculoService.atualizar(id, cliente_id, placa, marca, modelo, ano);
-
-  // Veiculo sem cliente associado [RN09]
-  if (resultado.erro) {
-    return res.status(400).json({ mensagem: resultado.erro });
+  try {
+    const resultado = await VeiculoService.atualizar(id, cliente_id, placa, marca, modelo, ano);
+    res.json(resultado);
+  } catch (erro) {
+    return res.status(400).json({ mensagem: erro.message });
   }
-
-  res.json(resultado);
 }
 
 // DELETE /veiculos/:id

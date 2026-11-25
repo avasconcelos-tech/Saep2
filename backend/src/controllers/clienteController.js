@@ -1,36 +1,37 @@
-// Controller de clientes: so recebe req/res e chama a service
-const ClienteService = require('../service/ClienteService');
+// Controller de clientes: recebe HTTP e chama a camada de serviço.
+const ClienteService = require("../service/ClienteService");
 
-// GET /clientes?busca=termo
 async function listar(req, res) {
-  const { busca } = req.query;
-  const clientes = await ClienteService.listar(busca);
+  const clientes = await ClienteService.listar(req.query.busca || "");
   res.json(clientes);
 }
 
-// PUT /clientes/:id
 async function atualizar(req, res) {
-  const { id } = req.params;
-  const { nome, cpf, telefone, email } = req.body;
-
-  const clienteAtualizado = await ClienteService.atualizar(id, nome, cpf, telefone, email);
-  res.json(clienteAtualizado);
+  try {
+    const { nome, cpf, telefone, email } = req.body;
+    const cliente = await ClienteService.atualizar(
+      req.params.id, nome, cpf, telefone, email
+    );
+    if (!cliente) return res.status(404).json({ mensagem: "Cliente não encontrado." });
+    res.json(cliente);
+  } catch (erro) {
+    res.status(400).json({ mensagem: erro.message });
+  }
 }
 
-// POST /clientes
 async function cadastrar(req, res) {
-  const { nome, cpf, telefone, email } = req.body;
-
-  const cliente = await ClienteService.cadastrar(nome, cpf, telefone, email);
-  res.status(201).json(cliente);
+  try {
+    const { nome, cpf, telefone, email } = req.body;
+    const cliente = await ClienteService.cadastrar(nome, cpf, telefone, email);
+    res.status(201).json(cliente);
+  } catch (erro) {
+    res.status(400).json({ mensagem: erro.message });
+  }
 }
 
-// DELETE /clientes/:id
 async function excluir(req, res) {
-  const { id } = req.params;
-
-  await ClienteService.excluir(id);
-  res.json({ mensagem: 'Cliente removido' });
+  await ClienteService.excluir(req.params.id);
+  res.json({ mensagem: "Cliente removido." });
 }
 
 module.exports = { listar, atualizar, cadastrar, excluir };

@@ -1,5 +1,5 @@
 // Service do usuario: regra de negocio do login
-require('dotenv').config();
+require('dotenv').config({ path: require('path').join(__dirname, '..', '..', '.env') });
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const UsuarioRepository = require('../repositories/UsuarioRepository');
